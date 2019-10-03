@@ -1,4 +1,3 @@
-export PI_HOST_NAME = xdoor
 export MIX_ENV = prod
 
 burn-complete: ensure-target
@@ -34,7 +33,7 @@ console: ensure-target
 	./ssh_console.sh $${PI_HOST_NAME}
 
 local_console: 
-	iex -S mix
+	MIX_ENV=dev iex -S mix
 
 clean:
 	mix clean

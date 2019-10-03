@@ -7,6 +7,10 @@ use Mix.Config
 
 config :xdoor, target: Mix.target()
 
+config :xdoor,
+  logfile: "./logins",
+  ssh_port: 8022
+
 # Customize non-Elixir parts of the firmware. See
 # https://hexdocs.pm/nerves/advanced-configuration.html for details.
 

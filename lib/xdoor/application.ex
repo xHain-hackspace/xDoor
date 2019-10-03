@@ -9,11 +9,11 @@ defmodule Xdoor.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Xdoor.Supervisor]
+
     children =
       [
-        # Children for all targets
-        # Starts a worker by calling: Xdoor.Worker.start_link(arg)
-        # {Xdoor.Worker, arg},
+        Xdoor.SSHServer,
+        Xdoor.AuthorizedKeys
       ] ++ children(target())
 
     Supervisor.start_link(children, opts)
