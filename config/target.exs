@@ -2,7 +2,8 @@ use Mix.Config
 
 config :xdoor,
   logfile: "/root/xdoor/logins",
-  ssh_port: 22
+  ssh_port: 22,
+  gpio_enabled: true
 
 keys =
   [
@@ -32,7 +33,7 @@ config :nerves_init_gadget,
   ifname: "wlan0",
   address_method: :dhcp,
   mdns_domain: nil,
-  node_name: nil,
+  node_name: "xdoor",
   node_host: :mdns_domain,
   ssh_console_port: 8022
 

@@ -16,7 +16,7 @@ push: ensure-target
 	. ./secrets_$(target) ;\
 	echo "Setting WiFi SSID: $${NERVES_NETWORK_SSID}" ;\
 	mix firmware &&\
-	rm upload.sh &&\
+	rm -f upload.sh &&\
 	mix firmware.gen.script &&\
 	./upload.sh $${PI_HOST_NAME}
 

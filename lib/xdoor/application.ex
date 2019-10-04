@@ -16,6 +16,7 @@ defmodule Xdoor.Application do
         Xdoor.AuthorizedKeys
       ] ++ children(target())
 
+    ensure_logdir()
     Supervisor.start_link(children, opts)
   end
 
@@ -38,5 +39,13 @@ defmodule Xdoor.Application do
 
   def target() do
     Application.get_env(:xdoor, :target)
+  end
+
+  def ensure_logdir() do
+    log_dir = Application.fetch_env!(:xdoor, :logfile) |> Path.dirname()
+
+    if !File.exists?(log_dir) do
+      File.mkdir_p!(log_dir)
+    end
   end
 end

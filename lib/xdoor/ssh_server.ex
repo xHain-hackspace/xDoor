@@ -3,6 +3,7 @@ defmodule Xdoor.SSHServer do
   require Logger
   alias Xdoor.SSHKeys
 
+  @greeting "xDoor"
   def start_link(_) do
     GenServer.start_link(__MODULE__, [])
   end
@@ -26,15 +27,43 @@ defmodule Xdoor.SSHServer do
     {:ok, %{server_pid: server_pid}}
   end
 
-  def start_shell(_user, _peer) do
-    spawn(fn ->
-      IO.puts("Hello @ xdoor")
-    end)
+  def start_shell('open' = user, _peer) do
+    Logger.info("Starting shell for user #{user}")
+    spawn(fn -> open_door() end)
+  end
+
+  def start_shell('close' = user, _peer) do
+    Logger.info("Starting shell for user #{user}")
+    spawn(fn -> close_door() end)
   end
 
   def start_exec(_cmd, _user, _peer) do
     spawn(fn ->
       IO.puts("Command execution not alllowed.")
     end)
+  end
+
+  defp open_door() do
+    IO.puts(@greeting)
+    IO.puts("OPENING DOOR")
+    toggle_gpio(23)
+    Logger.info("Door opened")
+  end
+
+  defp close_door() do
+    IO.puts(@greeting)
+    IO.puts("CLOSING DOOR")
+    toggle_gpio(24)
+    Logger.info("Door closed")
+  end
+
+  defp toggle_gpio(pin_number) do
+    if Application.get_env(:xdoor, :gpio_enabled, false) do
+      {:ok, gpio} = Circuits.GPIO.open(pin_number, :output)
+      Circuits.GPIO.write(gpio, 1)
+      :timer.sleep(100)
+      Circuits.GPIO.write(gpio, 0)
+      Circuits.GPIO.close(gpio)
+    end
   end
 end
