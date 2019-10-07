@@ -16,6 +16,6 @@
 # If the VM crashes, it generates a dump, let's ignore it too.
 erl_crash.dump
 
-/secrets_*
+/secrets
 /logins
 priv/authorized_keys/authorized_keys

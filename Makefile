@@ -1,35 +1,37 @@
 export MIX_ENV = prod
 
-burn-complete: ensure-target
-	. ./secrets_$(target) ;\
+burn-complete: ensure-secrets
+	. ./secrets ;\
 	echo "Setting WiFi SSID: $${NERVES_NETWORK_SSID}" ;\
 	mix firmware ;\
 	mix firmware.burn --task complete
 
-burn-upgrade: ensure-target
-	. ./secrets_$(target) ;\
+burn-upgrade: ensure-secrets
+	. ./secrets ;\
 	echo "Setting WiFi SSID: $${NERVES_NETWORK_SSID}" ;\
 	mix firmware ;\
 	mix firmware.burn --task upgrade
 
-push: ensure-target
-	. ./secrets_$(target) ;\
+push: ensure-secrets
+	. ./secrets ;\
 	echo "Setting WiFi SSID: $${NERVES_NETWORK_SSID}" ;\
 	mix firmware &&\
 	rm -f upload.sh &&\
 	mix firmware.gen.script &&\
 	./upload.sh $${PI_HOST_NAME}
 
-deps-get: ensure-target
-	. ./secrets_$(target) ;\
+deps-get: ensure-secrets
+	. ./secrets ;\
+	mix local.hex --force ;\
+	mix local.rebar --force ;\
 	mix deps.get
 
-deps-update: ensure-target
-	. ./secrets_$(target) ;\
+deps-update: ensure-secrets
+	. ./secrets ;\
 	mix deps.update --all
 
-console: ensure-target
-	. ./secrets_$(target) ;\
+console: ensure-secrets
+	. ./secrets ;\
 	./ssh_console.sh $${PI_HOST_NAME}
 
 local_console: 
@@ -40,5 +42,5 @@ clean:
 	mix nerves.clean --all
 	mix deps.clean --all
 
-ensure-target:
-	@if [ -z "$(target)" ]; then echo "The variabe 'target' needs to be defined"; exit 1; fi
+ensure-secrets:
+	@if [ ! -f "secrets" ]; then echo "No secrets file. See README"; exit 1; fi
