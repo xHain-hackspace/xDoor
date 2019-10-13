@@ -3,7 +3,7 @@ defmodule Xdoor.SSHServer do
   require Logger
   alias Xdoor.SSHKeys
 
-  @greeting "xDoor"
+  @greeting :code.priv_dir(:xdoor) |> Path.join("greeting") |> File.read!()
   def start_link(_) do
     GenServer.start_link(__MODULE__, [])
   end

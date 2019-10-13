@@ -34,9 +34,7 @@ defmodule Xdoor.AuthorizedKeys do
     since_last_update = System.os_time(:millisecond) - Application.get_env(:xdoor, :authorized_keys_last_update, 0)
 
     if since_last_update > @update_interval_ms do
-      spawn(fn ->
-        update_request()
-      end)
+      spawn(fn -> update_request() end)
     end
   end
 
