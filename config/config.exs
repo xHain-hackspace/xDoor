@@ -8,7 +8,7 @@ use Mix.Config
 config :xdoor, target: Mix.target()
 
 config :xdoor,
-  logfile: "./logins",
+  storage_dir: "./storage",
   ssh_port: 8022
 
 # Customize non-Elixir parts of the firmware. See
@@ -24,11 +24,7 @@ config :shoehorn,
   init: [:nerves_runtime, :nerves_init_gadget],
   app: Mix.Project.config()[:app]
 
-# Use Ringlogger as the logger backend and remove :console.
-# See https://hexdocs.pm/ring_logger/readme.html for more information on
-# configuring ring_logger.
-
-config :logger, backends: [RingLogger]
+config :logger, level: :info
 
 if Mix.target() != :host do
   import_config "target.exs"

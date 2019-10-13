@@ -18,12 +18,13 @@ defmodule Xdoor.SSHKeys do
     end
   end
 
-  def log(user, info) do
+  defp log(user, info) do
     file =
-      Application.fetch_env!(:xdoor, :logfile)
+      Application.fetch_env!(:xdoor, :storage_dir)
+      |> Path.join("logins")
       |> File.open!([:append])
 
-    IO.puts(file, "#{DateTime.utc_now()} : #{Keyword.get(info, :comment)} : #{user}")
+    IO.puts(file, "#{DateTime.utc_now() |> DateTime.to_iso8601()} : #{Keyword.get(info, :comment)} : #{user}")
     File.close(file)
   end
 end

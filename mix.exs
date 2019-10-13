@@ -45,6 +45,7 @@ defmodule Xdoor.MixProject do
       {:toolshed, "~> 0.2"},
       {:circuits_gpio, "~> 0.4"},
       {:ex_crypto, "~> 0.10"},
+      {:mojito, "~> 0.5"},
 
       # Dependencies for all targets except :host
       {:nerves_runtime, "~> 0.6", targets: @all_targets},

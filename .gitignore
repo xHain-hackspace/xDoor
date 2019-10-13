@@ -17,5 +17,5 @@
 erl_crash.dump
 
 /secrets
-/logins
+/storage
 priv/authorized_keys/authorized_keys

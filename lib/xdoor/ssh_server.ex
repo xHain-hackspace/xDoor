@@ -12,6 +12,8 @@ defmodule Xdoor.SSHServer do
     system_dir = :code.priv_dir(:xdoor) |> Path.join("host_key") |> to_charlist()
     port = Application.fetch_env!(:xdoor, :ssh_port)
 
+    Logger.info("Starting xdoor ssh server on port #{port}")
+
     {:ok, server_pid} =
       :ssh.daemon(port, [
         {:id_string, :random},
@@ -19,7 +21,8 @@ defmodule Xdoor.SSHServer do
         {:user_dir, system_dir},
         {:key_cb, {SSHKeys, []}},
         {:shell, &start_shell/2},
-        {:exec, &start_exec/3}
+        {:exec, &start_exec/3},
+        {:auth_methods, 'publickey'}
       ])
 
     Process.link(server_pid)

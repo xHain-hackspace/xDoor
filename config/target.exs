@@ -1,7 +1,7 @@
 use Mix.Config
 
 config :xdoor,
-  logfile: "/root/xdoor/logins",
+  storage_dir: "/root/xdoor",
   ssh_port: 22,
   gpio_enabled: true
 
@@ -36,5 +36,7 @@ config :nerves_init_gadget,
   node_name: "xdoor",
   node_host: :mdns_domain,
   ssh_console_port: 8022
+
+config :logger, backends: [RingLogger]
 
 # import_config "#{Mix.target()}.exs"
