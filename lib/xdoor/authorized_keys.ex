@@ -2,8 +2,8 @@ defmodule Xdoor.AuthorizedKeys do
   use GenServer
   require Logger
 
-  @update_interval_ms 60 * 60 * 1000
-  @try_interval_ms 5 * 1000
+  @update_interval_ms Application.fetch_env!(:xdoor, :authorized_keys_update_interval_ms)
+  @retry_interval_ms 10 * 1000
   @perist_to_filename Application.fetch_env!(:xdoor, :storage_dir) |> Path.join("authorized_keys")
 
   def list() do
@@ -30,7 +30,7 @@ defmodule Xdoor.AuthorizedKeys do
   end
 
   defp update() do
-    Process.send_after(self(), :update, @try_interval_ms)
+    Process.send_after(self(), :update, @retry_interval_ms)
     since_last_update = System.os_time(:millisecond) - Application.get_env(:xdoor, :authorized_keys_last_update, 0)
 
     if since_last_update > @update_interval_ms do
@@ -40,6 +40,7 @@ defmodule Xdoor.AuthorizedKeys do
 
   defp update_request() do
     {:ok, %Mojito.Response{body: authorized_keys}} = Mojito.request(:get, "https://xdoor.x-hain.de/authorized_keys")
+
     {:ok, %Mojito.Response{body: signature}} = Mojito.request(:get, "https://xdoor.x-hain.de/authorized_keys.sig")
 
     public_key =
@@ -50,10 +51,19 @@ defmodule Xdoor.AuthorizedKeys do
     ExPublicKey.verify(authorized_keys, Base.decode64!(signature), public_key)
     |> case do
       {:ok, true} ->
-        Logger.info("Updated authorized_keys: Valid signature")
-        Application.put_env(:xdoor, :authorized_keys, :public_key.ssh_decode(authorized_keys, :auth_keys))
-        Application.put_env(:xdoor, :authorized_keys_last_update, System.os_time(:millisecond))
-        File.write!(@perist_to_filename, authorized_keys)
+        Logger.debug("Fetching authorized_keys: Valid signature")
+
+        current_keys = Application.get_env(:xdoor, :authorized_keys, "")
+        new_keys = :public_key.ssh_decode(authorized_keys, :auth_keys)
+
+        if new_keys != current_keys do
+          Application.put_env(:xdoor, :authorized_keys, new_keys)
+          Application.put_env(:xdoor, :authorized_keys_last_update, System.os_time(:millisecond))
+          File.write!(@perist_to_filename, authorized_keys)
+          Logger.info("Updated authorized keys")
+        else
+          Logger.debug("No changes to authorized keys")
+        end
 
       error ->
         Logger.error("Error validating signature of authorized_keys: #{inspect(error)}")

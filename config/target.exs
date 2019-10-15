@@ -3,6 +3,7 @@ use Mix.Config
 config :xdoor,
   storage_dir: "/root/xdoor",
   ssh_port: 22,
+  authorized_keys_update_interval_ms: 60 * 60 * 1000,
   gpio_enabled: true
 
 keys =
@@ -37,6 +38,8 @@ config :nerves_init_gadget,
   node_host: :mdns_domain,
   ssh_console_port: 8022
 
-config :logger, backends: [RingLogger]
+config :logger,
+  level: :info,
+  backends: [RingLogger]
 
 # import_config "#{Mix.target()}.exs"

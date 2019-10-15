@@ -30,11 +30,11 @@ deps-update: ensure-secrets
 	. ./secrets ;\
 	mix deps.update --all
 
-console: ensure-secrets
+shell: ensure-secrets
 	. ./secrets ;\
 	./ssh_console.sh $${PI_HOST_NAME}
 
-local_console: 
+console: 
 	MIX_ENV=dev iex -S mix
 
 clean:

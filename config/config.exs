@@ -5,11 +5,11 @@
 # is restricted to this project.
 use Mix.Config
 
-config :xdoor, target: Mix.target()
-
 config :xdoor,
+  target: Mix.target(),
   storage_dir: "./storage",
-  ssh_port: 8022
+  ssh_port: 8022,
+  authorized_keys_update_interval_ms: 20 * 1000
 
 # Customize non-Elixir parts of the firmware. See
 # https://hexdocs.pm/nerves/advanced-configuration.html for details.
@@ -24,7 +24,7 @@ config :shoehorn,
   init: [:nerves_runtime, :nerves_init_gadget],
   app: Mix.Project.config()[:app]
 
-config :logger, level: :info
+config :logger, level: :debug
 
 if Mix.target() != :host do
   import_config "target.exs"
