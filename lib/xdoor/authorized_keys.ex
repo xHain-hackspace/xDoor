@@ -56,9 +56,10 @@ defmodule Xdoor.AuthorizedKeys do
         current_keys = Application.get_env(:xdoor, :authorized_keys, "")
         new_keys = :public_key.ssh_decode(authorized_keys, :auth_keys)
 
+        Application.put_env(:xdoor, :authorized_keys_last_update, System.os_time(:millisecond))
+
         if new_keys != current_keys do
           Application.put_env(:xdoor, :authorized_keys, new_keys)
-          Application.put_env(:xdoor, :authorized_keys_last_update, System.os_time(:millisecond))
           File.write!(@perist_to_filename, authorized_keys)
           Logger.info("Updated authorized keys")
         else

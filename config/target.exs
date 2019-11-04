@@ -41,5 +41,3 @@ config :nerves_init_gadget,
 config :logger,
   level: :info,
   backends: [RingLogger]
-
-# import_config "#{Mix.target()}.exs"
