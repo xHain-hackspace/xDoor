@@ -13,7 +13,8 @@ defmodule Xdoor.Application do
     children =
       [
         Xdoor.SSHServer,
-        Xdoor.AuthorizedKeys
+        Xdoor.AuthorizedKeys,
+        Xdoor.LockState
       ] ++ children(target())
 
     ensure_storage_dir()

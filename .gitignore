@@ -15,7 +15,9 @@
 
 # If the VM crashes, it generates a dump, let's ignore it too.
 erl_crash.dump
+.elixir_ls
 
 /secrets
 /storage
 priv/authorized_keys/authorized_keys
+

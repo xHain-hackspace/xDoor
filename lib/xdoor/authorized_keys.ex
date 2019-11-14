@@ -38,7 +38,7 @@ defmodule Xdoor.AuthorizedKeys do
     end
   end
 
-  defp update_request() do
+  def update_request() do
     {:ok, %Mojito.Response{body: authorized_keys}} = Mojito.request(:get, "https://xdoor.x-hain.de/authorized_keys")
 
     {:ok, %Mojito.Response{body: signature}} = Mojito.request(:get, "https://xdoor.x-hain.de/authorized_keys.sig")
