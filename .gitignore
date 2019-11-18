@@ -20,4 +20,5 @@ erl_crash.dump
 /secrets
 /storage
 priv/authorized_keys/authorized_keys
+/upload.sh
 
