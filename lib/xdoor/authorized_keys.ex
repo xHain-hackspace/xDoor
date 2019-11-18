@@ -10,6 +10,10 @@ defmodule Xdoor.AuthorizedKeys do
     Application.get_env(:xdoor, :authorized_keys, [])
   end
 
+  def list_admin() do
+    Application.get_env(:xdoor, :authorized_keys_admin, [])
+  end
+
   def start_link(_) do
     GenServer.start_link(__MODULE__, [])
   end
@@ -19,6 +23,12 @@ defmodule Xdoor.AuthorizedKeys do
       authorized_keys = File.read!(@perist_to_filename)
       Application.put_env(:xdoor, :authorized_keys, :public_key.ssh_decode(authorized_keys, :auth_keys))
     end
+
+    admin_keys =
+      Application.get_env(:nerves_firmware_ssh, :authorized_keys, [])
+      |> Enum.flat_map(&:pubkey_ssh.decode(&1, :public_key))
+
+    Application.put_env(:xdoor, :authorized_keys_admin, admin_keys)
 
     update()
     {:ok, %{}}

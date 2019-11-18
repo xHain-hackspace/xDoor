@@ -5,7 +5,7 @@ defmodule Xdoor.LockState do
   @poll_frequency_ms 100
   @gpio_lock_sensor 8
 
-  def get_state() do
+  def locked?() do
     Application.get_env(:xdoor, :lock_state)
   end
 
@@ -28,12 +28,12 @@ defmodule Xdoor.LockState do
   defp poll_gpio(%{gpio: gpio}) do
     Process.send_after(self(), :poll_gpio, @poll_frequency_ms)
 
-    last_state = get_state()
+    last_state = locked?()
 
     current_state =
       case Circuits.GPIO.read(gpio) do
-        0 -> :closed
-        1 -> :open
+        0 -> true
+        1 -> false
       end
 
     if last_state != current_state do

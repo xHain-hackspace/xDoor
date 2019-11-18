@@ -14,10 +14,12 @@ defmodule Xdoor.Application do
       [
         Xdoor.SSHServer,
         Xdoor.AuthorizedKeys,
-        Xdoor.LockState
+        Xdoor.LockState,
+        Xdoor.MotionDetection
       ] ++ children(target())
 
     ensure_storage_dir()
+    Xdoor.OnboardLed.init()
     Supervisor.start_link(children, opts)
   end
 

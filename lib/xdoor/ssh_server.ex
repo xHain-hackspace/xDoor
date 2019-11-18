@@ -3,7 +3,6 @@ defmodule Xdoor.SSHServer do
   require Logger
   alias Xdoor.{SSHKeys, LockControl}
 
-  @greeting :code.priv_dir(:xdoor) |> Path.join("greeting") |> File.read!()
   def start_link(_) do
     GenServer.start_link(__MODULE__, [])
   end
@@ -40,7 +39,15 @@ defmodule Xdoor.SSHServer do
     spawn(fn -> LockControl.close() end)
   end
 
-  def start_exec(_cmd, _user, _peer) do
+  def start_exec('logins', 'admin', _peer) do
+    spawn(fn -> Xdoor.logins() end)
+  end
+
+  def start_exec('lock_state_changes', 'admin', _peer) do
+    spawn(fn -> Xdoor.lock_state_changes() end)
+  end
+
+  def start_exec('_cmd', _user, _peer) do
     spawn(fn ->
       IO.puts("Command execution not alllowed.")
     end)
