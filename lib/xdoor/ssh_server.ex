@@ -21,6 +21,7 @@ defmodule Xdoor.SSHServer do
         {:key_cb, {SSHKeys, []}},
         {:shell, &start_shell/2},
         {:exec, &start_exec/3},
+        {:parallel_login, true},
         {:auth_methods, 'publickey'}
       ])
 

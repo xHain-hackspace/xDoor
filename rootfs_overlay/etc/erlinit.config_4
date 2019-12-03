@@ -5,8 +5,8 @@
 
 # Specify where erlinit should send the IEx prompt. Only one may be enabled at
 # a time.
--c ttyS0     # UART pins on the GPIO connector
-#-c tty1      # HDMI output
+#-c ttyS0     # UART pins on the GPIO connector
+-c tty1      # HDMI output
 
 # If more than one tty are available, always warn if the user is looking at the
 # wrong one.
@@ -60,7 +60,7 @@
 # Assign a hostname of the form "nerves-<serial_number>".
 # See /etc/boardid.config for locating the serial number.
 -d /usr/bin/boardid
--n nerves-%s
+-n xdoor
 
 # If using shoehorn (https://github.com/nerves-project/shoehorn), start the
 # shoehorn OTP release up first. If shoehorn isn't around, erlinit fails back
