@@ -28,8 +28,9 @@ config :nerves_network, :default,
     ssid: System.get_env("NERVES_NETWORK_SSID"),
     psk: System.get_env("NERVES_NETWORK_PSK"),
     key_mgmt: String.to_atom("WPA-PSK")
-  ],
-  regulatory_domain: "DE"
+  ]
+
+# regulatory_domain: "DE"
 
 config :nerves_init_gadget,
   ifname: "wlan0",

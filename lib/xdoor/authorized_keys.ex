@@ -5,6 +5,7 @@ defmodule Xdoor.AuthorizedKeys do
   @update_interval_ms Application.fetch_env!(:xdoor, :authorized_keys_update_interval_ms)
   @retry_interval_ms 10 * 1000
   @perist_to_filename Application.fetch_env!(:xdoor, :storage_dir) |> Path.join("authorized_keys")
+  @log_dir Application.fetch_env!(:xdoor, :storage_dir) |> Path.join("logs")
 
   def list() do
     Application.get_env(:xdoor, :authorized_keys, [])
@@ -61,7 +62,7 @@ defmodule Xdoor.AuthorizedKeys do
     ExPublicKey.verify(authorized_keys, Base.decode64!(signature), public_key)
     |> case do
       {:ok, true} ->
-        Logger.debug("Fetching authorized_keys: Valid signature")
+        Logger.info("Fetching authorized_keys: Valid signature")
 
         current_keys = Application.get_env(:xdoor, :authorized_keys, "")
         new_keys = :public_key.ssh_decode(authorized_keys, :auth_keys)
@@ -79,5 +80,12 @@ defmodule Xdoor.AuthorizedKeys do
       error ->
         Logger.error("Error validating signature of authorized_keys: #{inspect(error)}")
     end
+  end
+
+  def persist_logs() do
+    File.mkdir(@log_dir)
+    date_str = DateTime.utc_now() |> DateTime.to_iso8601()
+    log_filename = Path.join(@log_dir, "#{date_str}.logs")
+    RingLogger.save(log_filename)
   end
 end

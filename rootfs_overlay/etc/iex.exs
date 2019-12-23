@@ -2,7 +2,7 @@
 use Toolshed
 alias Tr33Control.Commands
 
-Logger.configure(level: :debug)
+# Logger.configure(level: :debug)
 
 if RingLogger in Application.get_env(:logger, :backends, []) do
   RingLogger.tail(300)
