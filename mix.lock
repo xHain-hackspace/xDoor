@@ -1,6 +1,6 @@
 %{
   "castore": {:hex, :castore, "0.1.5", "591c763a637af2cc468a72f006878584bc6c306f8d111ef8ba1d4c10e0684010", [:mix], [], "hexpm"},
-  "circuits_gpio": {:hex, :circuits_gpio, "0.4.3", "1a53dff1eaeefb9f67f4ebc2c1852b603683eedaa6053bed51c038dd64b978bb", [:make, :mix], [{:elixir_make, "~> 0.6", [hex: :elixir_make, repo: "hexpm", optional: false]}], "hexpm"},
+  "circuits_gpio": {:hex, :circuits_gpio, "0.4.4", "09823645b82d84177549c9520e822ffb87d228413527f8a3134f4f436be16efe", [:make, :mix], [{:elixir_make, "~> 0.6", [hex: :elixir_make, repo: "hexpm", optional: false]}], "hexpm"},
   "dns": {:hex, :dns, "2.1.2", "81c46d39f7934f0e73368355126e4266762cf227ba61d5889635d83b2d64a493", [:mix], [{:socket, "~> 0.3.13", [hex: :socket, repo: "hexpm", optional: false]}], "hexpm"},
   "elixir_make": {:hex, :elixir_make, "0.6.0", "38349f3e29aff4864352084fc736fa7fa0f2995a819a737554f7ebd28b85aaab", [:mix], [], "hexpm"},
   "ex_crypto": {:hex, :ex_crypto, "0.10.0", "af600a89b784b36613a989da6e998c1b200ff1214c3cfbaf8deca4aa2f0a1739", [:mix], [{:poison, ">= 2.0.0", [hex: :poison, repo: "hexpm", optional: false]}], "hexpm"},
