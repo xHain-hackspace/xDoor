@@ -14,8 +14,8 @@ defmodule Xdoor.Application do
       [
         Xdoor.SSHServer,
         Xdoor.AuthorizedKeys,
-        Xdoor.LockState
-        # Xdoor.MotionDetection
+        Xdoor.LockState,
+        Xdoor.MotionDetection
       ] ++ children(target())
 
     ensure_storage_dir()

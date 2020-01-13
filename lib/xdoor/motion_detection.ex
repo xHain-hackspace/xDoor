@@ -4,8 +4,8 @@ defmodule Xdoor.MotionDetection do
   alias Xdoor.{LockState, LockControl, OnboardLed}
 
   @poll_frequency_ms 100
-  @gpio_lock_sensor 7
-  @no_motion_threshold_ms 5 * 60 * 1000
+  @gpio_motion_sensor 7
+  @no_motion_threshold_ms 10 * 60 * 1000
 
   def last_motion() do
     Application.get_env(:xdoor, :last_motion, 0)
@@ -16,7 +16,7 @@ defmodule Xdoor.MotionDetection do
   end
 
   def init(_) do
-    {:ok, gpio} = Circuits.GPIO.open(@gpio_lock_sensor, :input)
+    {:ok, gpio} = Circuits.GPIO.open(@gpio_motion_sensor, :input)
     state = %{gpio: gpio}
     poll_gpio(state)
     {:ok, state}
