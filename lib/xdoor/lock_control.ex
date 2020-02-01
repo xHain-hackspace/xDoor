@@ -7,14 +7,14 @@ defmodule Xdoor.LockControl do
     IO.puts(@greeting)
     IO.puts("OPENING DOOR")
     toggle_gpio(23)
-    Logger.info("Door opened")
+    Logger.info("Door is opening")
   end
 
   def close() do
     IO.puts(@greeting)
     IO.puts("CLOSING DOOR")
     toggle_gpio(24)
-    Logger.info("Door closed")
+    Logger.info("Door is closing")
   end
 
   defp toggle_gpio(pin_number) do

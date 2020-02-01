@@ -37,9 +37,13 @@ defmodule Xdoor.LockState do
       end
 
     if last_state != current_state do
-      Logger.info("Lock state changed from #{last_state} to #{current_state}")
+      Logger.info("Locked? state changed from :#{last_state} to #{current_state}")
       log(current_state)
       Application.put_env(:xdoor, :lock_state, current_state)
+
+      if not current_state do
+        Xdoor.MotionDetection.reset_last_motion()
+      end
     end
   end
 

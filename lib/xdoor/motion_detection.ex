@@ -11,6 +11,11 @@ defmodule Xdoor.MotionDetection do
     Application.get_env(:xdoor, :last_motion, 0)
   end
 
+  def reset_last_motion() do
+    Logger.info("Resetting last motion")
+    Application.put_env(:xdoor, :last_motion, System.os_time(:millisecond))
+  end
+
   def start_link(_) do
     GenServer.start_link(__MODULE__, [])
   end
