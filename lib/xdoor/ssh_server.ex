@@ -48,7 +48,11 @@ defmodule Xdoor.SSHServer do
     spawn(fn -> Xdoor.lock_state_changes() end)
   end
 
-  def start_exec('_cmd', _user, _peer) do
+  def start_exec('logs', 'admin', _peer) do
+    spawn(fn -> Xdoor.logs() end)
+  end
+
+  def start_exec(_cmd, _user, _peer) do
     spawn(fn ->
       IO.puts("Command execution not alllowed.")
     end)

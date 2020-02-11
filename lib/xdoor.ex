@@ -12,4 +12,10 @@ defmodule Xdoor do
     |> File.read!()
     |> IO.puts()
   end
+
+  def logs() do
+    RingLogger.get()
+    |> Enum.map(&RingLogger.format/1)
+    |> IO.puts()
+  end
 end

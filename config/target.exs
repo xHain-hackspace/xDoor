@@ -34,3 +34,6 @@ config :nerves_init_gadget,
 config :logger,
   level: :info,
   backends: [RingLogger]
+
+config :ring_logger,
+  format: "$time $metadata[$level]$levelpad$message\n"

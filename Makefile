@@ -42,5 +42,11 @@ clean:
 	mix nerves.clean --all
 	mix deps.clean --all
 
+logs:
+	ssh admin@xdoor logs 
+
+lock-state-changes:
+	ssh admin@xdoor lock_state_changes
+
 ensure-secrets:
 	@if [ ! -f "secrets" ]; then echo "No secrets file. See README"; exit 1; fi
