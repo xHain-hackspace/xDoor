@@ -47,6 +47,8 @@ defmodule Xdoor.MotionDetection do
 
           if LockState.locked?() do
             # Logger.debug("Lock already closed")
+            reset_last_motion()
+            :timer.sleep(5000)
           else
             Logger.info("No motion deteced for #{inspect(@no_motion_threshold_ms)} ms and lock is open, closing")
             LockControl.close()
