@@ -3,9 +3,9 @@ defmodule Xdoor.MotionDetection do
   require Logger
   alias Xdoor.{LockState, LockControl, OnboardLed}
 
-  @poll_frequency_ms 100
+  @poll_frequency_ms 200
   @gpio_motion_sensor 7
-  @no_motion_threshold_ms 10 * 60 * 1000
+  @no_motion_threshold_ms 5 * 60 * 1000
 
   def last_motion() do
     Application.get_env(:xdoor, :last_motion, 0)
@@ -43,7 +43,7 @@ defmodule Xdoor.MotionDetection do
         OnboardLed.set(0)
 
         if current_time > last_motion + @no_motion_threshold_ms do
-          # Logger.debug("No Motion Detected, above threshold. #{current_time} #{last_motion} #{@no_motion_threshold_ms}")
+          Logger.debug("No Motion Detected, above threshold. #{current_time} #{last_motion} #{@no_motion_threshold_ms}")
 
           if LockState.locked?() do
             # Logger.debug("Lock already closed")
@@ -55,12 +55,13 @@ defmodule Xdoor.MotionDetection do
             :timer.sleep(5000)
           end
         else
-          # Logger.debug("No Motion Detected, below threshold")
+          Logger.debug("No Motion Detected, below threshold")
         end
 
       1 ->
         OnboardLed.set(1)
         Application.put_env(:xdoor, :last_motion, current_time)
+        Logger.debug("Motion Detected")
     end
   end
 end

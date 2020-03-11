@@ -14,17 +14,20 @@ keys = [
 config :nerves_firmware_ssh,
   authorized_keys: keys
 
-config :nerves_network, :default,
-  wlan0: [
-    ssid: System.get_env("NERVES_NETWORK_SSID"),
-    psk: System.get_env("NERVES_NETWORK_PSK"),
-    key_mgmt: String.to_atom("WPA-PSK")
-  ]
+# config :nerves_network, :default,
+# wlan0: [
+#   ssid: System.get_env("NERVES_NETWORK_SSID"),
+#   psk: System.get_env("NERVES_NETWORK_PSK"),
+#   key_mgmt: String.to_atom("WPA-PSK")
+# ],
+# eth0: [
+#   ipv4_address_method: :dhcp
+# ]
 
 # regulatory_domain: "DE"
 
 config :nerves_init_gadget,
-  ifname: "wlan0",
+  ifname: "eth0",
   address_method: :dhcp,
   mdns_domain: nil,
   node_name: "xdoor",
