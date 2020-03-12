@@ -39,4 +39,4 @@ config :logger,
   backends: [RingLogger]
 
 config :ring_logger,
-  format: "$time $metadata[$level]$levelpad$message\n"
+  format: "$time $metadata[$level]$levelpad $message\n"
