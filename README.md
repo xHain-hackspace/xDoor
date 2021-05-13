@@ -48,5 +48,15 @@ There are make target for all relevant operations. The most important ones are
 
 # Hardware
 
-ToDo
+## Used hardware for the locking mechanism
+* Equiva Doorlock
+<img href=https://www.eq-3.de/assets/images/3/Eqiva-Bluethooth-Smart-Tuerschlossantrieb-V-oS_142950A0_stiwa-b947e9f2.png></img>
+solder 2 cables (yellow and white) to the buttons
+<img href=https://files.x-hain.de/index.php/s/jXqJgEF7y3HWRHt></img>
+solder 2 cables (red and black) to connect the power-supply, if you don't want to rely on batteries.
+<img href=https://files.x-hain.de/index.php/s/tdT44XT4kYpza6Y></img>
+drill a hole into tha case for the cables
 
+
+* Locking cylinder
+Standard cylinder - important: needs to be lockable with keys on both sides in the cylinder
