@@ -52,15 +52,15 @@ There are make target for all relevant operations. The most important ones are
 * Equiva Doorlock
 <img href=https://www.eq-3.de/assets/images/3/Eqiva-Bluethooth-Smart-Tuerschlossantrieb-V-oS_142950A0_stiwa-b947e9f2.png></img>
 
-- solder 2 cables (yellow and white) to the buttons
+** solder 2 cables (yellow and white) to the buttons
 <img src=pic1.jpg></img>
 
-- solder 2 cables (red and black) to connect the power-supply, if you don't want to rely on batteries.
+** solder 2 cables (red and black) to connect the power-supply, if you don't want to rely on batteries.
 <img src=pic2.jpg></img>
 
-- drill a hole into tha case for the cables
+** drill a hole into tha case for the cables
 
 
 * Locking cylinder
 
-- Standard cylinder - important: needs to be lockable with keys on both sides in the cylinder
+** Standard cylinder - important: needs to be lockable with keys on both sides in the cylinder
