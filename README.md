@@ -54,7 +54,7 @@ There are make target for all relevant operations. The most important ones are
 solder 2 cables (yellow and white) to the buttons
 <img src=pic1.jpg></img>
 solder 2 cables (red and black) to connect the power-supply, if you don't want to rely on batteries.
-<img src=https://files.x-hain.de/index.php/s/tdT44XT4kYpza6Y></img>
+<img src=pic2.jpg></img>
 drill a hole into tha case for the cables
 
 
