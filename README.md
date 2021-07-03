@@ -52,18 +52,17 @@ There are make target for all relevant operations. The most important ones are
 * Equiva Doorlock
 <img href=https://www.eq-3.de/assets/images/3/Eqiva-Bluethooth-Smart-Tuerschlossantrieb-V-oS_142950A0_stiwa-b947e9f2.png></img>
 
-** solder 2 cables (yellow and white) to the buttons
+    * solder 2 cables (yellow and white) to the buttons
 <img src=pic1.jpg></img>
 
-** solder 2 cables (red and black) to connect the power-supply, if you don't want to rely on batteries. ST6 is GND, ST5 is battery voltage. There's a voltage regulator on the board, so a resistor is not necessary to get from 5V down to 4.5V. 
+    * solder 2 cables (red and black) to connect the power-supply, if you don't want to rely on batteries. ST6 is GND, ST5 is battery voltage. There's a voltage regulator on the board, so a resistor is not necessary to get from 5V down to 4.5V. 
 <img src=pic2.jpg></img>
 
-** Cut this trace to disable the bluetooth chip by disconnecting power. This way no one has to connect 8 fake profiles to the door. 
+    * Cut this trace to disable the bluetooth chip by disconnecting power. This way no one has to connect 8 fake profiles to the door. 
 <img src=pic3.jpg></img>
 
-** drill a hole into tha case for the cables
+    * drill a hole into tha case for the cables
 
 
 * Locking cylinder
-
-** Standard cylinder - important: needs to be lockable with keys on both sides in the cylinder
+    * Standard cylinder - important: needs to be lockable with keys on both sides in the cylinder
