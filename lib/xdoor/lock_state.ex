@@ -47,7 +47,7 @@ defmodule Xdoor.LockState do
 
   defp on_state_change(state) do
     log(state)
-    send_report(state)
+    # send_report(state)
   end
 
   defp log(state) do
@@ -60,20 +60,20 @@ defmodule Xdoor.LockState do
     File.close(file)
   end
 
-  defp send_report(state) do
-    body =
-      %{
-        state: state,
-        last_motion_s: (Xdoor.MotionDetection.last_motion() / 1000) |> round
-      }
-      |> Jason.encode!()
+  # defp send_report(state) do
+  #   body =
+  #     %{
+  #       state: state,
+  #       last_motion_s: (Xdoor.MotionDetection.last_motion() / 1000) |> round
+  #     }
+  #     |> Jason.encode!()
 
-    case Mojito.post(@report_url, [], body) do
-      {:ok, reponse} ->
-        Logger.debug("Lock state change report send. response: #{inspect(reponse)}")
+  #   case Mojito.post(@report_url, [], body) do
+  #     {:ok, reponse} ->
+  #       Logger.debug("Lock state change report send. response: #{inspect(reponse)}")
 
-      error ->
-        Logger.error("Error sending lock stage change report: #{inspect(error)}")
-    end
-  end
+  #     error ->
+  #       Logger.error("Error sending lock stage change report: #{inspect(error)}")
+  #   end
+  # end
 end

@@ -8,4 +8,4 @@ host=${1}
 #     printf "%c" "."
 # done
 
-ssh ${host} -p 8022
+ssh ${host} -p 23

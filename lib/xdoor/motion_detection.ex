@@ -1,7 +1,7 @@
 defmodule Xdoor.MotionDetection do
   use GenServer
   require Logger
-  alias Xdoor.{LockState, LockControl, OnboardLed}
+  alias Xdoor.{LockState, LockControl}
 
   @poll_frequency_ms 200
   @gpio_motion_sensor 7
@@ -40,8 +40,6 @@ defmodule Xdoor.MotionDetection do
 
     case Circuits.GPIO.read(gpio) do
       0 ->
-        OnboardLed.set(0)
-
         if current_time > last_motion + @no_motion_threshold_ms do
           Logger.debug("No Motion Detected, above threshold. #{current_time} #{last_motion} #{@no_motion_threshold_ms}")
 
@@ -59,7 +57,6 @@ defmodule Xdoor.MotionDetection do
         end
 
       1 ->
-        OnboardLed.set(1)
         Application.put_env(:xdoor, :last_motion, current_time)
         Logger.debug("Motion Detected")
     end

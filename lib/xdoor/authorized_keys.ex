@@ -1,10 +1,10 @@
 defmodule Xdoor.AuthorizedKeys do
   use GenServer
   require Logger
+  alias Xdoor.AuthorizedKeysApi
 
-  @update_interval_ms Application.fetch_env!(:xdoor, :authorized_keys_update_interval_ms)
-  @retry_interval_ms 10 * 1000
-  @perist_to_filename Application.fetch_env!(:xdoor, :storage_dir) |> Path.join("authorized_keys")
+  @update_interval_ms Application.compile_env!(:xdoor, :authorized_keys_update_interval_ms)
+  @perist_to_filename Application.compile_env!(:xdoor, :storage_dir) |> Path.join("authorized_keys")
   @log_dir Application.fetch_env!(:xdoor, :storage_dir) |> Path.join("logs")
 
   def list() do
@@ -22,37 +22,33 @@ defmodule Xdoor.AuthorizedKeys do
   def init(_) do
     if File.exists?(@perist_to_filename) do
       authorized_keys = File.read!(@perist_to_filename)
-      Application.put_env(:xdoor, :authorized_keys, :public_key.ssh_decode(authorized_keys, :auth_keys))
+      Application.put_env(:xdoor, :authorized_keys, :ssh_file.decode(authorized_keys, :auth_keys))
     end
 
     admin_keys =
-      Application.get_env(:nerves_firmware_ssh, :authorized_keys, [])
+      Application.get_env(:nerves_ssh, :authorized_keys, [])
       |> Enum.flat_map(&:pubkey_ssh.decode(&1, :public_key))
 
     Application.put_env(:xdoor, :authorized_keys_admin, admin_keys)
 
-    update()
+    schedule_update()
     {:ok, %{}}
   end
 
   def handle_info(:update, state) do
-    update()
+    schedule_update()
     {:noreply, state}
   end
 
-  defp update() do
-    Process.send_after(self(), :update, @retry_interval_ms)
-    since_last_update = System.os_time(:millisecond) - Application.get_env(:xdoor, :authorized_keys_last_update, 0)
-
-    if since_last_update > @update_interval_ms do
-      spawn(fn -> update_request() end)
-    end
+  defp schedule_update() do
+    Process.send_after(self(), :update, @update_interval_ms)
+    spawn(fn -> update() end)
   end
 
-  def update_request() do
-    {:ok, %Mojito.Response{body: authorized_keys}} = Mojito.request(:get, "https://xdoor.x-hain.de/authorized_keys")
-
-    {:ok, %Mojito.Response{body: signature}} = Mojito.request(:get, "https://xdoor.x-hain.de/authorized_keys.sig")
+  def update() do
+    Logger.debug("Starting update of authorized keys")
+    {:ok, %Tesla.Env{body: authorized_keys}} = AuthorizedKeysApi.authorized_keys()
+    {:ok, %Tesla.Env{body: signature}} = AuthorizedKeysApi.signature()
 
     public_key =
       :code.priv_dir(:xdoor)
@@ -65,7 +61,7 @@ defmodule Xdoor.AuthorizedKeys do
         Logger.info("Fetching authorized_keys: Valid signature")
 
         current_keys = Application.get_env(:xdoor, :authorized_keys, "")
-        new_keys = :public_key.ssh_decode(authorized_keys, :auth_keys)
+        new_keys = :ssh_file.decode(authorized_keys, :auth_keys)
 
         Application.put_env(:xdoor, :authorized_keys_last_update, System.os_time(:millisecond))
 

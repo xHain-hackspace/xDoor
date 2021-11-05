@@ -1,38 +1,31 @@
 export MIX_ENV = prod
+export MIX_TARGET=rpi4
 
-burn-complete: ensure-secrets
-	. ./secrets ;\
-	echo "Setting WiFi SSID: $${NERVES_NETWORK_SSID}" ;\
+
+burn-complete:
 	mix firmware ;\
 	mix firmware.burn --task complete
 
-burn-upgrade: ensure-secrets
-	. ./secrets ;\
-	echo "Setting WiFi SSID: $${NERVES_NETWORK_SSID}" ;\
+burn-upgrade:
 	mix firmware ;\
 	mix firmware.burn --task upgrade
 
-push: ensure-secrets
-	. ./secrets ;\
-	echo "Setting WiFi SSID: $${NERVES_NETWORK_SSID}" ;\
+push:
 	mix firmware &&\
 	rm -f upload.sh &&\
 	mix firmware.gen.script &&\
-	./upload.sh $${PI_HOST_NAME}
+	SSH_OPTIONS="-p 23" ./upload.sh xdoor.lan.xhain.space
 
-deps-get: ensure-secrets
-	. ./secrets ;\
+deps-get:
 	mix local.hex --force ;\
 	mix local.rebar --force ;\
 	mix deps.get
 
-deps-update: ensure-secrets
-	. ./secrets ;\
+deps-update:
 	mix deps.update --all
 
-shell: ensure-secrets
-	. ./secrets ;\
-	./ssh_console.sh $${PI_HOST_NAME}
+shell:
+	./ssh_console.sh xdoor.lan.xhain.space
 
 console: 
 	MIX_ENV=dev iex -S mix
@@ -48,5 +41,5 @@ logs:
 lock-state-changes:
 	ssh admin@xdoor lock_state_changes
 
-ensure-secrets:
-	@if [ ! -f "secrets" ]; then echo "No secrets file. See README"; exit 1; fi
+logins:
+	ssh admin@xdoor logins

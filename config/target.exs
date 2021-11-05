@@ -1,42 +1,56 @@
-use Mix.Config
+import Config
 
 config :xdoor,
-  storage_dir: "/root/xdoor",
+  storage_dir: "/data/xdoor",
   ssh_port: 22,
   authorized_keys_update_interval_ms: 60 * 60 * 1000,
-  gpio_enabled: true
+  gpio_enabled: true,
+  enable_monitor: true
+
+config :shoehorn,
+  init: [:nerves_runtime, :nerves_pack],
+  app: Mix.Project.config()[:app]
+
+config :nerves_runtime, :kernel, use_system_registry: false
+
+config :nerves,
+  erlinit: [
+    hostname_pattern: "xdoor"
+  ]
 
 keys = [
-  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMBSfSmc2s5m8HpuSxyD2LP0FgpyYDs7oan/lfdwN9sZ",
   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFk68ujMEgPVglDNnxqrht/0piGwofQy4GmPjgq4CvUV"
 ]
 
-config :nerves_firmware_ssh,
+if keys == [],
+  do:
+    Mix.raise("""
+    No SSH public keys found in ~/.ssh. An ssh authorized key is needed to
+    log into the Nerves device and update firmware on it using ssh.
+    See your project's config.exs for this error message.
+    """)
+
+config :nerves_ssh,
+  port: 23,
   authorized_keys: keys
 
-# config :nerves_network, :default,
-# wlan0: [
-#   ssid: System.get_env("NERVES_NETWORK_SSID"),
-#   psk: System.get_env("NERVES_NETWORK_PSK"),
-#   key_mgmt: String.to_atom("WPA-PSK")
-# ],
-# eth0: [
-#   ipv4_address_method: :dhcp
-# ]
+config :vintage_net,
+  regulatory_domain: "DE",
+  config: [
+    {"eth0",
+     %{
+       type: VintageNetEthernet,
+       ipv4: %{method: :dhcp}
+     }}
+  ]
 
-# regulatory_domain: "DE"
+config :mdns_lite,
+  # The `host` key specifies what hostnames mdns_lite advertises.  `:hostname`
+  # advertises the device's hostname.local. For the official Nerves systems, this
+  # is "nerves-<4 digit serial#>.local".  mdns_lite also advertises
+  # "nerves.local" for convenience. If more than one Nerves device is on the
+  # network, delete "nerves" from the list.
+  host: ["xdoor"],
+  ttl: 120
 
-config :nerves_init_gadget,
-  ifname: "eth0",
-  address_method: :dhcp,
-  mdns_domain: nil,
-  node_name: "xdoor",
-  node_host: :mdns_domain,
-  ssh_console_port: 8022
-
-config :logger,
-  level: :info,
-  backends: [RingLogger]
-
-config :ring_logger,
-  format: "$time $metadata[$level]$levelpad $message\n"
+config :logger, level: :info

@@ -18,17 +18,6 @@ asdf install
 ``` 
 should install everything required.
 
-## Secrets
-
-The wifi-credentials and any other target specific configs are contained in the `./secrets` file that is (for obvious reasons) not committed to git. Here is an example with all the required values:
-
-```
-export MIX_TARGET=rpi0 #https://hexdocs.pm/nerves/targets.html
-export NERVES_NETWORK_SSID=xHain
-export NERVES_NETWORK_PSK=password
-export PI_HOST_NAME=xdoor.lan.xhain.space #required for flashing via ssh
-```
-
 ## SSH host_key
 
 The host_key for the ssh server is expect to lie in `priv/host_key/`. It can be generated with 
