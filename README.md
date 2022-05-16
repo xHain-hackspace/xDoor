@@ -41,7 +41,7 @@ There are make target for all relevant operations. The most important ones are
 * Equiva Doorlock
 <img href=https://www.eq-3.de/assets/images/3/Eqiva-Bluethooth-Smart-Tuerschlossantrieb-V-oS_142950A0_stiwa-b947e9f2.png></img>
 
-    * solder 2 cables (yellow and white) to the buttons, yellow is open, white is close 
+    * solder 2 cables (yellow and white) to the buttons, yellow is close, white is open 
 <img src=pic1.jpg></img>
 
     * solder 2 cables (red and black) to connect the power-supply, if you don't want to rely on batteries. ST6 is GND, ST5 is battery voltage. There's a voltage regulator on the board, so a resistor is not necessary to get from 5V down to 4.5V. 
