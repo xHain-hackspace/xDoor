@@ -5,7 +5,7 @@ defmodule Xdoor.AuthorizedKeys do
 
   @update_interval_ms Application.compile_env!(:xdoor, :authorized_keys_update_interval_ms)
   @perist_to_filename Application.compile_env!(:xdoor, :storage_dir) |> Path.join("authorized_keys")
-  @log_dir Application.fetch_env!(:xdoor, :storage_dir) |> Path.join("logs")
+  @log_dir Application.compile_env!(:xdoor, :storage_dir) |> Path.join("logs")
 
   def list() do
     Application.get_env(:xdoor, :authorized_keys, [])

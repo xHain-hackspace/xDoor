@@ -1,5 +1,5 @@
 export MIX_ENV = prod
-export MIX_TARGET=rpi4
+export MIX_TARGET = rpi3
 
 
 burn-complete:

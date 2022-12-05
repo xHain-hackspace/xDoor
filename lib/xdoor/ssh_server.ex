@@ -40,6 +40,16 @@ defmodule Xdoor.SSHServer do
     spawn(fn -> LockControl.close() end)
   end
 
+  def start_exec(_, 'open' = user, _peer) do
+    Logger.info("Starting exec for user #{user}")
+    spawn(fn -> LockControl.open() end)
+  end
+
+  def start_exec(_, 'close' = user, _peer) do
+    Logger.info("Starting exec for user #{user}")
+    spawn(fn -> LockControl.close() end)
+  end
+
   def start_exec('logins', 'admin', _peer) do
     spawn(fn -> Xdoor.logins() end)
   end

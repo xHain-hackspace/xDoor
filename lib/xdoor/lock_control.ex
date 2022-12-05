@@ -4,15 +4,15 @@ defmodule Xdoor.LockControl do
   @greeting :code.priv_dir(:xdoor) |> Path.join("greeting") |> File.read!()
 
   def open() do
-    IO.puts(@greeting)
-    IO.puts("OPENING DOOR")
+    # IO.write(@greeting)
+    IO.write("OPENING DOOR\n")
     toggle_gpio(23)
     Logger.info("Door is opening")
   end
 
   def close() do
-    IO.puts(@greeting)
-    IO.puts("CLOSING DOOR")
+    # IO.write(@greeting)
+    IO.write("CLOSING DOOR\n")
     toggle_gpio(24)
     Logger.info("Door is closing")
   end

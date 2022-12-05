@@ -14,8 +14,8 @@ defmodule Xdoor.Application do
       {Finch, name: Xdoor.Finch},
       Xdoor.Monitor,
       Xdoor.SSHServer,
-      Xdoor.AuthorizedKeys
-      # Xdoor.LockState
+      Xdoor.AuthorizedKeys,
+      Xdoor.LockState
       # Xdoor.MotionDetection
     ]
 
