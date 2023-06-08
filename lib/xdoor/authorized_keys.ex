@@ -27,7 +27,7 @@ defmodule Xdoor.AuthorizedKeys do
 
     admin_keys =
       Application.get_env(:nerves_ssh, :authorized_keys, [])
-      |> Enum.flat_map(&:pubkey_ssh.decode(&1, :public_key))
+      |> Enum.flat_map(&:ssh_file.decode(&1, :auth_keys))
 
     Application.put_env(:xdoor, :authorized_keys_admin, admin_keys)
 

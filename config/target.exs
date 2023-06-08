@@ -44,6 +44,8 @@ config :vintage_net,
      }}
   ]
 
+config :nerves, :firmware, fwup_conf: "custom_boot/fwup.conf"
+
 config :mdns_lite,
   # The `host` key specifies what hostnames mdns_lite advertises.  `:hostname`
   # advertises the device's hostname.local. For the official Nerves systems, this

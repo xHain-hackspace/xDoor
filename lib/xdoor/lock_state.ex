@@ -2,9 +2,9 @@ defmodule Xdoor.LockState do
   use GenServer
   require Logger
 
-  @poll_frequency_ms 100
+  @poll_frequency_ms 200
   @gpio_lock_sensor 8
-  @report_url "http://nas:8000/door"
+  @report_url "https://moped.x-hain.de/public/xdoor"
 
   def locked?() do
     Application.get_env(:xdoor, :lock_state)
@@ -16,6 +16,7 @@ defmodule Xdoor.LockState do
 
   def init(_) do
     {:ok, gpio} = Circuits.GPIO.open(@gpio_lock_sensor, :input)
+    Circuits.GPIO.set_pull_mode(gpio, :pullup)
     state = %{gpio: gpio}
     poll_gpio(state)
     {:ok, state}
@@ -47,7 +48,7 @@ defmodule Xdoor.LockState do
 
   defp on_state_change(state) do
     log(state)
-    # send_report(state)
+    send_report(state)
   end
 
   defp log(state) do
@@ -60,20 +61,26 @@ defmodule Xdoor.LockState do
     File.close(file)
   end
 
-  # defp send_report(state) do
-  #   body =
-  #     %{
-  #       state: state,
-  #       last_motion_s: (Xdoor.MotionDetection.last_motion() / 1000) |> round
-  #     }
-  #     |> Jason.encode!()
+  defp send_report(state) do
+    state_str =
+      case state do
+        false -> "open"
+        true -> "closed"
+      end
 
-  #   case Mojito.post(@report_url, [], body) do
-  #     {:ok, reponse} ->
-  #       Logger.debug("Lock state change report send. response: #{inspect(reponse)}")
+    body =
+      %{
+        lock_state: state_str
+        # last_motion_s: (Xdoor.MotionDetection.last_motion() / 1000) |> round
+      }
+      |> Jason.encode!()
 
-  #     error ->
-  #       Logger.error("Error sending lock stage change report: #{inspect(error)}")
-  #   end
-  # end
+    case Tesla.post(@report_url, body, headers: [{"content-type", "application/json"}]) do
+      {:ok, %Tesla.Env{status: 200, body: body}} ->
+        Logger.debug("Lock state change report send. response_body: #{inspect(body)}")
+
+      error ->
+        Logger.error("Error sending lock stage change report: #{inspect(error)}")
+    end
+  end
 end
