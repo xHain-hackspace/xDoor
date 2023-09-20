@@ -11,7 +11,6 @@ defmodule Xdoor.Application do
     opts = [strategy: :one_for_one, name: Xdoor.Supervisor]
 
     children = [
-      {Finch, name: Xdoor.Finch},
       Xdoor.Monitor,
       Xdoor.SSHServer,
       Xdoor.AuthorizedKeys,

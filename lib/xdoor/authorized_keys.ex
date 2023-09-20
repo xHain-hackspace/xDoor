@@ -1,7 +1,6 @@
 defmodule Xdoor.AuthorizedKeys do
   use GenServer
   require Logger
-  alias Xdoor.AuthorizedKeysApi
 
   @update_interval_ms Application.compile_env!(:xdoor, :authorized_keys_update_interval_ms)
   @perist_to_filename Application.compile_env!(:xdoor, :storage_dir) |> Path.join("authorized_keys")
@@ -47,8 +46,8 @@ defmodule Xdoor.AuthorizedKeys do
 
   def update() do
     Logger.debug("Starting update of authorized keys")
-    {:ok, %Tesla.Env{body: authorized_keys}} = AuthorizedKeysApi.authorized_keys()
-    {:ok, %Tesla.Env{body: signature}} = AuthorizedKeysApi.signature()
+    %Req.Response{status: 200, body: authorized_keys} = Req.get!("https://xdoor.x-hain.de/authorized_keys")
+    %Req.Response{status: 200, body: signature} = Req.get!("https://xdoor.x-hain.de/authorized_keys.sig")
 
     public_key =
       :code.priv_dir(:xdoor)

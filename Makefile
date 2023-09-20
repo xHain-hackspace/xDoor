@@ -28,7 +28,7 @@ shell:
 	./ssh_console.sh xdoor.lan.xhain.space
 
 console: 
-	MIX_ENV=dev iex -S mix
+	MIX_TARGET=host MIX_ENV=dev iex -S mix
 
 clean:
 	mix clean

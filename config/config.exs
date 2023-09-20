@@ -20,8 +20,6 @@ config :ring_logger, format: "$time $metadata[$level]$levelpad $message\n"
 
 config :nerves_leds, names: [green: "led0", red: "led1"]
 
-config :tesla, :adapter, {Tesla.Adapter.Finch, name: Xdoor.Finch}
-
 if Mix.target() == :host or Mix.target() == :"" do
   import_config "host.exs"
 else

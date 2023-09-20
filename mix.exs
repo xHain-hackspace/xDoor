@@ -50,8 +50,9 @@ defmodule Xdoor.MixProject do
       {:jason, "~> 1.0"},
       {:nerves_leds, "~> 0.8"},
       {:nerves_motd, "~> 0.1.0", targets: @all_targets},
-      {:finch, "~> 0.8"},
-      {:tesla, "~> 1.4"},
+      {:req, "~> 0.4"},
+      # {:emqtt, github: "emqx/emqtt", tag: "1.8.7", system_env: [{"BUILD_WITHOUT_QUIC", "1"}]},
+      {:emqtt, github: "rabbitmq/emqtt", branch: "otp-26-compatibility", system_env: [{"BUILD_WITHOUT_QUIC", "1"}]},
 
       # Dependencies for all targets except :host
       {:nerves_runtime, "~> 0.11", targets: @all_targets},

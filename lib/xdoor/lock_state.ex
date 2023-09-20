@@ -75,12 +75,12 @@ defmodule Xdoor.LockState do
       }
       |> Jason.encode!()
 
-    case Tesla.post(@report_url, body, headers: [{"content-type", "application/json"}]) do
-      {:ok, %Tesla.Env{status: 200, body: body}} ->
-        Logger.debug("Lock state change report send. response_body: #{inspect(body)}")
+    #   case Tesla.post(@report_url, body, headers: [{"content-type", "application/json"}]) do
+    #     {:ok, %Tesla.Env{status: 200, body: body}} ->
+    #       Logger.debug("Lock state change report send. response_body: #{inspect(body)}")
 
-      error ->
-        Logger.error("Error sending lock stage change report: #{inspect(error)}")
-    end
+    #     error ->
+    #       Logger.error("Error sending lock stage change report: #{inspect(error)}")
+    #   end
   end
 end
