@@ -14,7 +14,8 @@ defmodule Xdoor.Application do
       Xdoor.Monitor,
       Xdoor.SSHServer,
       Xdoor.AuthorizedKeys,
-      Xdoor.LockState
+      Xdoor.LockState,
+      Xdoor.Mqtt
       # Xdoor.MotionDetection
     ]
 

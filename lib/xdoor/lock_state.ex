@@ -2,6 +2,8 @@ defmodule Xdoor.LockState do
   use GenServer
   require Logger
 
+  alias Xdoor.Mqtt
+
   @poll_frequency_ms 200
   @gpio_lock_sensor 8
   @report_url "https://moped.x-hain.de/public/xdoor"
@@ -48,7 +50,7 @@ defmodule Xdoor.LockState do
 
   defp on_state_change(state) do
     log(state)
-    send_report(state)
+    Mqtt.send_lockstate(state)
   end
 
   defp log(state) do
@@ -59,28 +61,5 @@ defmodule Xdoor.LockState do
 
     IO.puts(file, "#{DateTime.utc_now() |> DateTime.to_iso8601()};#{state}")
     File.close(file)
-  end
-
-  defp send_report(state) do
-    state_str =
-      case state do
-        false -> "open"
-        true -> "closed"
-      end
-
-    body =
-      %{
-        lock_state: state_str
-        # last_motion_s: (Xdoor.MotionDetection.last_motion() / 1000) |> round
-      }
-      |> Jason.encode!()
-
-    #   case Tesla.post(@report_url, body, headers: [{"content-type", "application/json"}]) do
-    #     {:ok, %Tesla.Env{status: 200, body: body}} ->
-    #       Logger.debug("Lock state change report send. response_body: #{inspect(body)}")
-
-    #     error ->
-    #       Logger.error("Error sending lock stage change report: #{inspect(error)}")
-    #   end
   end
 end
