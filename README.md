@@ -4,7 +4,7 @@
 
 Operates the door of the xHain using ssh as authentication. After successful ssh login (`open@xdoor` or `close@xdoor`) the lock motor is triggered via gpio.
 
-It is build in elixir using the [nevers-framework](https://hexdocs.pm/nerves/getting-started.html) and runs on any rapsberry-pi.
+It is build in elixir using the [nerves-framework](https://hexdocs.pm/nerves/getting-started.html) and runs on any Rapsberry Pi.
 
 ## Authorized Keys
 
@@ -50,7 +50,7 @@ There are make target for all relevant operations. The most important ones are
     * Cut this trace to disable the bluetooth chip by disconnecting power. This way no one has to connect 8 fake profiles to the door. 
 <img src=pic3.jpg></img>
 
-    * drill a hole into tha case for the cables
+    * drill a hole into the case for the cables
 
 
 * Locking cylinder
