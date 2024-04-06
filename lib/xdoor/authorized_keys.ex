@@ -45,7 +45,7 @@ defmodule Xdoor.AuthorizedKeys do
   end
 
   def update() do
-    Logger.debug("Starting update of authorized keys")
+    Logger.info("Updating authorized keys")
     %Req.Response{status: 200, body: authorized_keys} = Req.get!("https://xdoor.x-hain.de/authorized_keys")
     %Req.Response{status: 200, body: signature} = Req.get!("https://xdoor.x-hain.de/authorized_keys.sig")
 
@@ -57,19 +57,19 @@ defmodule Xdoor.AuthorizedKeys do
     ExPublicKey.verify(authorized_keys, Base.decode64!(signature), public_key)
     |> case do
       {:ok, true} ->
-        Logger.info("Fetching authorized_keys: Valid signature")
+        Logger.debug("Fetching authorized_keys: Valid signature")
 
         current_keys = Application.get_env(:xdoor, :authorized_keys, "")
         new_keys = :ssh_file.decode(authorized_keys, :auth_keys)
 
         Application.put_env(:xdoor, :authorized_keys_last_update, System.os_time(:millisecond))
 
-        if new_keys != current_keys do
+        if :erlang.phash2(new_keys) != :erlang.phash2(current_keys) do
           Application.put_env(:xdoor, :authorized_keys, new_keys)
           File.write!(@perist_to_filename, authorized_keys)
-          Logger.info("Updated authorized keys")
+          Logger.info("Authorized keys changed")
         else
-          Logger.debug("No changes to authorized keys")
+          Logger.info("No changes to authorized keys")
         end
 
       error ->

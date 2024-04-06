@@ -19,7 +19,7 @@ disable_splash=1
 # configuration. See Target packages->Hardware handling->Firmware.
 gpu_mem=192
 
-# Enable I2C, SPI, and audio
+# Disable I2C, SPI, and audio
 dtparam=i2c_arm=off
 dtparam=spi=off
 dtparam=audio=off

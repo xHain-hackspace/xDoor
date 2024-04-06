@@ -7,7 +7,7 @@ defmodule Xdoor.Monitor do
   end
 
   @network_message_name ["interface", "eth0", "connection"]
-  @tick_interval 1000
+  @tick_interval 60000
 
   def init(_) do
     if Application.get_env(:xdoor, :enable_monitor, false) do
@@ -75,16 +75,12 @@ defmodule Xdoor.Monitor do
 
       {_, 0} ->
         # past bad, current good
-        Application.put_env(:tr33_pi, :health_log, true)
+        Logger.info("#{__MODULE__}: System unhealthy, vcgencmd current: #{inspect(current)}, past: #{inspect(past)}")
         Nerves.Leds.set(:green, :slowblink)
 
       {_, _} ->
         # past and current bad
-        if Application.get_env(:tr33_pi, :health_log, true) do
-          Logger.warn("#{__MODULE__}: System unhealthy, vcgencmd current: #{inspect(current)}, past: #{inspect(past)}")
-
-          Application.put_env(:tr33_pi, :health_log, false)
-        end
+        Logger.error("#{__MODULE__}: System unhealthy, vcgencmd current: #{inspect(current)}, past: #{inspect(past)}")
 
         Nerves.Leds.set(:green, :fastblink)
     end
