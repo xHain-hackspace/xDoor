@@ -3,7 +3,7 @@ import Config
 config :xdoor,
   storage_dir: "/data/xdoor",
   ssh_port: 22,
-  authorized_keys_update_interval_ms: 60 * 60 * 1000,
+  authorized_keys_update_interval_ms: 5 * 60 * 1000,
   gpio_enabled: true,
   enable_monitor: true
 
