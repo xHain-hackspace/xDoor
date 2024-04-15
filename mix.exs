@@ -51,7 +51,7 @@ defmodule Xdoor.MixProject do
       {:nerves_leds, "~> 0.8"},
       {:nerves_motd, "~> 0.1.0", targets: @all_targets},
       {:req, "~> 0.4"},
-      {:emqtt, github: "emqx/emqtt", tag: "1.11.0", system_env: [{"BUILD_WITHOUT_QUIC", "1"}]},
+      {:ex_homeassistant, git: "git@github.com:Reimerei/ex_homeassistant.git", branch: "main"},
 
       # Dependencies for all targets except :host
       {:nerves_runtime, "~> 0.11", targets: @all_targets},

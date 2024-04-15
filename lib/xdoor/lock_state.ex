@@ -2,11 +2,14 @@ defmodule Xdoor.LockState do
   use GenServer
   require Logger
 
-  alias Xdoor.Mqtt
+  alias ExHomeassistant.Devices.Switch
 
   @poll_frequency_ms 200
   @gpio_lock_sensor 8
-  @report_url "https://moped.x-hain.de/public/xdoor"
+
+  @xdoor_switch %Switch{
+    name: "xDoor Lock"
+  }
 
   def locked?() do
     Application.get_env(:xdoor, :lock_state)
@@ -21,11 +24,25 @@ defmodule Xdoor.LockState do
     Circuits.GPIO.set_pull_mode(gpio, :pullup)
     state = %{gpio: gpio}
     poll_gpio(state)
+    Switch.configure(@xdoor_switch)
+    Switch.subscribe(@xdoor_switch)
+    Switch.set_state(@xdoor_switch, locked?())
     {:ok, state}
   end
 
   def handle_info(:poll_gpio, state) do
     poll_gpio(state)
+    {:noreply, state}
+  end
+
+  def handle_info({:homeassistant_command, _, _} = event, state) do
+    Logger.info("Received HomeAssistant command: #{inspect(event)}")
+
+    case Switch.parse_event(@xdoor_switch, event) do
+      true -> Xdoor.LockControl.close()
+      _ -> :noop
+    end
+
     {:noreply, state}
   end
 
@@ -50,7 +67,7 @@ defmodule Xdoor.LockState do
 
   defp on_state_change(state) do
     log(state)
-    Mqtt.send_lockstate(state)
+    Switch.set_state(@xdoor_switch, state)
   end
 
   defp log(state) do

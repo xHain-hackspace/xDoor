@@ -1,25 +1,25 @@
 defmodule Xdoor.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
-  @moduledoc false
-
   use Application
 
+  @mqtt_config [
+    mqtt_host: "homeassistant.lan.xhain.space",
+    username: "homeassistant",
+    password: File.read!("secrets/mqtt_pw") |> String.trim(),
+    client_id: "xdoor"
+  ]
+
   def start(_type, _args) do
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Xdoor.Supervisor]
+    ensure_storage_dir()
 
     children = [
       Xdoor.Monitor,
       Xdoor.SSHServer,
       Xdoor.AuthorizedKeys,
+      {ExHomeassistant, @mqtt_config},
       Xdoor.LockState
-      # Xdoor.Mqtt
-      # Xdoor.MotionDetection
     ]
 
-    ensure_storage_dir()
+    opts = [strategy: :one_for_one, name: Xdoor.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
