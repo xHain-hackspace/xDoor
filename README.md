@@ -28,6 +28,8 @@ Beware that regenerating this will prompt all clients to re-authenticate the fin
 
 ## Makefile 
 
+To specify the hostname of the xDoor add `host=<your_hostname>` to the end of your call to make.
+
 There are make target for all relevant operations. The most important ones are
 
 * `make deps-get burn-complete`: Get all dependencies, build the firmware image and flash to inserted sd-card. It tries to auto-detect the sd-card and asks for confirmation before flashing.
