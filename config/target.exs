@@ -52,7 +52,7 @@ config :mdns_lite,
   # is "nerves-<4 digit serial#>.local".  mdns_lite also advertises
   # "nerves.local" for convenience. If more than one Nerves device is on the
   # network, delete "nerves" from the list.
-  hosts: ["xdoor"],
+  hosts: [hostname],
   ttl: 120
 
 config :logger, level: :info

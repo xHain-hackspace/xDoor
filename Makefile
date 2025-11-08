@@ -1,6 +1,13 @@
+# variables
+host=xdoor
+
+# environment
 export MIX_ENV = prod
 export MIX_TARGET = rpi3
+export XDOOR_HOST = ${host}
 
+setup:
+	mix archive.install hex nerves_bootstrap
 
 burn-complete:
 	mix firmware ;\
@@ -14,7 +21,7 @@ push:
 	mix firmware &&\
 	rm -f upload.sh &&\
 	mix firmware.gen.script &&\
-	SSH_OPTIONS="-p 23" ./upload.sh xdoor.lan.xhain.space
+	SSH_OPTIONS="-p 23" ./upload.sh ${host}.lan.xhain.space
 
 deps-get:
 	mix local.hex --force ;\
@@ -25,7 +32,7 @@ deps-update:
 	mix deps.update --all
 
 shell:
-	./ssh_console.sh xdoor.lan.xhain.space
+	ssh -p 23 admin@${host}.lan.xhain.space
 
 console: 
 	MIX_TARGET=host MIX_ENV=dev iex -S mix
@@ -36,10 +43,10 @@ clean:
 	mix deps.clean --all
 
 logs:
-	ssh admin@xdoor logs 
+	ssh admin@${host} logs 
 
 lock-state-changes:
-	ssh admin@xdoor lock_state_changes
+	ssh admin@${host} lock_state_changes
 
 logins:
-	ssh admin@xdoor logins
+	ssh admin@${host} logins
