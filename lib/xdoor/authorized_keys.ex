@@ -44,10 +44,16 @@ defmodule Xdoor.AuthorizedKeys do
     spawn(fn -> update() end)
   end
 
+  @authorized_keys_base_url "https://valkyrie.x-hain.de"
+
   def update() do
     Logger.info("Updating authorized keys")
-    %Req.Response{status: 200, body: authorized_keys} = Req.get!("https://xdoor.x-hain.de/authorized_keys")
-    %Req.Response{status: 200, body: signature} = Req.get!("https://xdoor.x-hain.de/authorized_keys.sig")
+    host = Application.get_env(:xdoor, :host)
+
+    %Req.Response{status: 200, body: authorized_keys} =
+      Req.get!("#{@authorized_keys_base_url}/authorized_keys", headers: [{"X-door-hostname", host}])
+
+    %Req.Response{status: 200, body: signature} = Req.get!("#{@authorized_keys_base_url}/authorized_keys.sig")
 
     public_key =
       :code.priv_dir(:xdoor)

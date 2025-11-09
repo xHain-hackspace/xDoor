@@ -1,5 +1,7 @@
 import Config
 
+hostname = System.get_env("XDOOR_HOST") || raise("XDOOR_HOST environment variable is not set")
+
 config :xdoor,
   storage_dir: "/data/xdoor",
   ssh_port: 22,
@@ -8,14 +10,14 @@ config :xdoor,
   enable_monitor: true
 
 config :shoehorn,
-  init: [:nerves_runtime, :nerves_pack],
+  init: [:nerves_runtime, :nerves_pack, :nerves_ssh],
   app: Mix.Project.config()[:app]
 
 config :nerves_runtime, :kernel, use_system_registry: false
 
 config :nerves,
   erlinit: [
-    hostname_pattern: "xdoor"
+    hostname_pattern: hostname
   ]
 
 keys = [

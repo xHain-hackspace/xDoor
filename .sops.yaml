@@ -1,0 +1,7 @@
+keys:
+  - &gueldi age1hz8vpdegmkz9ex797uxx3h0xh9zycjw56p0mvrepgjpfu2pfhpnsx6fel2
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|yml|json|env|ini)$
+    key_groups:
+      - age:
+        - *gueldi

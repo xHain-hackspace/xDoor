@@ -24,9 +24,9 @@ defmodule Xdoor.LockState do
     Circuits.GPIO.set_pull_mode(gpio, :pullup)
     state = %{gpio: gpio}
     poll_gpio(state)
-    Switch.configure(@xdoor_switch)
-    Switch.subscribe(@xdoor_switch)
-    Switch.set_state(@xdoor_switch, locked?())
+    # Switch.configure(@xdoor_switch)
+    # Switch.subscribe(@xdoor_switch)
+    # Switch.set_state(@xdoor_switch, locked?())
     {:ok, state}
   end
 
