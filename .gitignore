@@ -22,3 +22,7 @@ erl_crash.dump
 priv/authorized_keys/authorized_keys
 /upload.sh
 
+.direnv/
+.nix-hex/
+.nix-mix/
+
