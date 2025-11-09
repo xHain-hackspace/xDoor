@@ -1,5 +1,6 @@
 # variables
 host=xdoor
+secrets_file=secrets.yml
 
 # environment
 export MIX_ENV = prod
@@ -8,6 +9,13 @@ export XDOOR_HOST = ${host}
 
 setup:
 	mix archive.install hex nerves_bootstrap
+
+generate-secrets:
+	mkdir -p secrets priv/host_key
+	sops -d --extract '["mqtt_password"]' ${secrets_file} > secrets/mqtt_pw
+	sops -d --extract '["authorized_keys_pub_pem"]' ${secrets_file} > priv/authorized_keys_pub.pem
+	sops -d --extract '["${host}"]["ssh_key"]["pub"]' ${secrets_file} > priv/host_key/ssh_host_ed25519_key.pub
+	sops -d --extract '["${host}"]["ssh_key"]["priv"]' ${secrets_file} > priv/host_key/ssh_host_ed25519_key
 
 burn-complete:
 	mix firmware ;\

@@ -25,6 +25,7 @@
           squashfsTools
           fwup
           coreutils-prefixed
+          sops
         ];
 
         elixirPackages = with pkgs.beam28Packages; [
