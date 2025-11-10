@@ -45,7 +45,7 @@ defmodule Xdoor.MixProject do
       {:toolshed, "~> 0.2"},
 
       # Added
-      {:circuits_gpio, "~> 1.0"},
+      {:circuits_gpio, "~> 2.0"},
       {:ex_crypto, "~> 0.10"},
       {:jason, "~> 1.0"},
       {:nerves_leds, "~> 0.8"},
