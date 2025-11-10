@@ -45,7 +45,7 @@ defmodule Xdoor.AuthorizedKeys do
   end
 
   def update() do
-    Logger.info("Updating authorized keys")
+    Logger.debug("Updating authorized keys")
     %Req.Response{status: 200, body: authorized_keys} = Req.get!("https://xdoor.x-hain.de/authorized_keys")
     %Req.Response{status: 200, body: signature} = Req.get!("https://xdoor.x-hain.de/authorized_keys.sig")
 
@@ -69,7 +69,7 @@ defmodule Xdoor.AuthorizedKeys do
           File.write!(@perist_to_filename, authorized_keys)
           Logger.info("Authorized keys changed")
         else
-          Logger.info("No changes to authorized keys")
+          Logger.debug("No changes to authorized keys")
         end
 
       error ->

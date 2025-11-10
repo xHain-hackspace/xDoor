@@ -75,7 +75,7 @@ defmodule Xdoor.Monitor do
 
       {_, 0} ->
         # past bad, current good
-        Logger.info("#{__MODULE__}: System unhealthy, vcgencmd current: #{inspect(current)}, past: #{inspect(past)}")
+        Logger.debug("#{__MODULE__}: System unhealthy, vcgencmd current: #{inspect(current)}, past: #{inspect(past)}")
         Nerves.Leds.set(:green, :slowblink)
 
       {_, _} ->
