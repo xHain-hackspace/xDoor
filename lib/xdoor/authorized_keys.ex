@@ -51,7 +51,7 @@ defmodule Xdoor.AuthorizedKeys do
     host = Application.get_env(:xdoor, :host)
 
     %Req.Response{status: 200, body: authorized_keys} =
-      Req.get!("#{@authorized_keys_base_url}/authorized_keys", headers: [{"X-door-hostname", host}])
+      Req.get!("#{@authorized_keys_base_url}/authorized_keys", headers: [{"x-door", ""}])
 
     %Req.Response{status: 200, body: signature} = Req.get!("#{@authorized_keys_base_url}/authorized_keys.sig")
 
@@ -63,7 +63,7 @@ defmodule Xdoor.AuthorizedKeys do
     ExPublicKey.verify(authorized_keys, Base.decode64!(signature), public_key)
     |> case do
       {:ok, true} ->
-        Logger.debug("Fetching authorized_keys: Valid signature")
+        Logger.info("Fetching authorized_keys: Valid signature")
 
         current_keys = Application.get_env(:xdoor, :authorized_keys, "")
         new_keys = :ssh_file.decode(authorized_keys, :auth_keys)
