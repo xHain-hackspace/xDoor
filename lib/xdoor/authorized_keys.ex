@@ -44,7 +44,7 @@ defmodule Xdoor.AuthorizedKeys do
     spawn(fn -> update() end)
   end
 
-  @authorized_keys_base_url "https://valkyrie.x-hain.de"
+  @authorized_keys_base_url "https://xdoor.x-hain.de"
 
   def update() do
     Logger.info("Updating authorized keys")
