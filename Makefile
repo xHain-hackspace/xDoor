@@ -17,6 +17,9 @@ generate-secrets:
 	sops -d --extract '["${host}"]["ssh_key"]["pub"]' ${secrets_file} > priv/host_key/ssh_host_ed25519_key.pub
 	sops -d --extract '["${host}"]["ssh_key"]["priv"]' ${secrets_file} > priv/host_key/ssh_host_ed25519_key
 
+update_secrets_keys:
+	sops updatekeys secrets.yml
+
 burn-complete:
 	mix firmware ;\
 	mix firmware.burn --task complete

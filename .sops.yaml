@@ -1,7 +1,9 @@
 keys:
   - &gueldi ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINkN6Gh946RDixD57F0DVCKDSWTgJWIdW5YXbokMXuwi
+  - &parrot ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOaBI+GSSMj3Swkh9iN3oJ5HHxvkBOelRYf+7FfDJ8yG
 creation_rules:
   - path_regex: secrets.yml
     key_groups:
       - age:
           - *gueldi
+          - *parrot
