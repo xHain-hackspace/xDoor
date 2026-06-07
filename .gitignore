@@ -26,3 +26,4 @@ priv/authorized_keys/authorized_keys
 .nix-hex/
 .nix-mix/
 
+.env*
